@@ -1,0 +1,88 @@
+openapi: 3.0.0
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/JOSEPANTA63/exchange-rate-service/1.0.0
+info:
+  description: API to apply exchange rate
+  version: "1.0.0"
+  title: exchange-rate-api
+  contact:
+    email: you@your-company.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: developers
+    description: Operations available to regular developers
+paths:
+  /exchange-rate:
+    post:
+      tags:
+        - developers
+      summary: return amount apply exchange rate between two currencies
+      operationId: applyExchangeRate
+      description: |
+        return amount applied exchange rate between two currencies.
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/ExchangeRateResponse'
+        '400':
+          description: unsuccessful operation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExchangeRateRequest'
+        description: currencies and amount.
+        required: true
+components:
+  schemas:
+    ExchangeRateRequest:
+      type: object
+      required:
+        - currencyOriginId
+        - currencyDestinyId
+        - amount
+      properties:
+        currencyOriginId:
+          type: integer
+          format: int64
+          example: 1
+        currencyDestinyId:
+          type: integer
+          format: int64
+          example: 2
+        amount:
+          type: number
+          example: 3.77
+    ExchangeRateResponse:
+      type: object
+      required:
+        - amount
+        - amountWithExchangeRate
+        - currencyOriginId
+        - currencyDestinyId
+      properties:
+        amount:
+          type: number
+          format: double
+          example: 1
+        amountWithExchangeRate:
+          type: number
+          format: double
+          example: 3.77
+        currencyOriginId:
+          type: integer
+          format: int64
+          example: 1
+        currencyDestinyId:
+          type: integer
+          format: int64
+          example: 2
