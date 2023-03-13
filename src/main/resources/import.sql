@@ -22,3 +22,5 @@ insert into exchange(currencyOrigin, currencyDestiny, exchangeRate) values (4, 4
 insert into exchange(currencyOrigin, currencyDestiny, exchangeRate) values (4, 1, 4.01);
 insert into exchange(currencyOrigin, currencyDestiny, exchangeRate) values (4, 2, 1.06);
 insert into exchange(currencyOrigin, currencyDestiny, exchangeRate) values (4, 3, 7.35);
+
+insert into users(name, email, password) values ('jose', 'josepanta@gmail.com', '$2a$10$BYU19sHVJ3yJ92IaLkTDWO98gwNEsONBjwOjYnHVxWO4ccjtlnKya')
