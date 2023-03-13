@@ -17,6 +17,30 @@ tags:
     description: Operations available to regular developers
 paths:
   /exchange-rate:
+    put:
+      tags:
+        - developers
+      summary: update exchange rate between two currencies
+      operationId: updateExchangeRateByCurrencyIds
+      description: |
+        update exchange rate between two currencies
+      responses:
+        '200':
+          description: successful operation
+          content:
+            text/plain:
+              schema:
+                type: string
+        '400':
+          description: unsuccessful operation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExchangeRateRequest'
+        description: currencies and new exchange rate value.
+        required: true
+  /exchange-rate/apply:
     post:
       tags:
         - developers
