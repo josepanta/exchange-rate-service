@@ -17,6 +17,24 @@ tags:
     description: Operations available to regular developers
 paths:
   /exchange-rate:
+    get:
+      tags:
+        - developers
+      summary: return all exchange rates
+      operationId: getAll
+      description: |
+        return all ar-images
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ExchangeRateRequest'
+        '400':
+          description: unsuccessful operation
     put:
       tags:
         - developers
@@ -40,6 +58,29 @@ paths:
               $ref: '#/components/schemas/ExchangeRateRequest'
         description: currencies and new exchange rate value.
         required: true
+    patch:
+      tags:
+        - developers
+      summary: update exchange rate by list of ids
+      operationId: updateListOfExchangeRateByCurrencyIds
+      description: |
+        update exchange rate by list of ids
+      responses:
+        '200':
+          description: successful operation
+          content:
+            text/plain:
+              schema:
+                type: string
+        '400':
+          description: unsuccessful operation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExchangeRateListRequest'
+        description: list of currencies and new exchange rate values.
+        required: true
   /exchange-rate/apply:
     post:
       tags:
@@ -54,9 +95,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/ExchangeRateResponse'
+                $ref: '#/components/schemas/ExchangeRateResponse'
         '400':
           description: unsuccessful operation
       requestBody:
@@ -66,6 +105,38 @@ paths:
               $ref: '#/components/schemas/ExchangeRateRequest'
         description: currencies and amount.
         required: true
+  /exchange-rate/{currencyOriginId}/{currencyDestinyId}:
+    get:
+      tags:
+        - developers
+      summary: return exchange rate by currencyOriginId and currencyDestinyId
+      operationId: getByCurrencyOriginIdAndCurrencyDestinyId
+      parameters:
+        - name: currencyOriginId
+          in: path
+          description: Currency origin id
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: currencyDestinyId
+          in: path
+          description: Currency destiny id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      description: |
+        return exchange rate by currencyOriginId and currencyDestinyId
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExchangeRateRequest'
+        '400':
+          description: unsuccessful operation
 components:
   schemas:
     ExchangeRateRequest:
@@ -96,11 +167,9 @@ components:
       properties:
         amount:
           type: number
-          format: double
           example: 1
         amountWithExchangeRate:
           type: number
-          format: double
           example: 3.77
         currencyOriginId:
           type: integer
@@ -110,3 +179,12 @@ components:
           type: integer
           format: int64
           example: 2
+    ExchangeRateListRequest:
+      type: object
+      required:
+        - exchangeRateList
+      properties:
+        exchangeRateList:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExchangeRateRequest'

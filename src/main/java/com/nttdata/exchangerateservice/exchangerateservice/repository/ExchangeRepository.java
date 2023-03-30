@@ -14,6 +14,9 @@ import java.util.Optional;
 @Repository
 @Transactional
 public interface ExchangeRepository extends JpaRepository<Exchange, Integer> {
+
+    public Optional<Exchange> findByCurrencyOriginAndCurrencyDestiny(Integer currencyOrigin, Integer currencyDestiny);
+
     @Query("SELECT e FROM Exchange e WHERE e.currencyOrigin = :currencyOrigin AND e.currencyDestiny = :currencyDestiny")
     public Optional<Exchange> getExchangeRate(@Param("currencyOrigin") Integer currencyOrigin, @Param("currencyDestiny") Integer currencyDestiny);
 
