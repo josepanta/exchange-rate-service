@@ -1,4 +1,4 @@
-package com.nttdata.exchangerateservice.exchangerateservice.repository;
+package com.nttdata.exchangerateservice.exchangerateservice.entity.key;
 
 import java.io.Serializable;
 

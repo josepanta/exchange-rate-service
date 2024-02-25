@@ -1,6 +1,6 @@
 package com.nttdata.exchangerateservice.exchangerateservice.entity;
 
-import com.nttdata.exchangerateservice.exchangerateservice.repository.ExchangePK;
+import com.nttdata.exchangerateservice.exchangerateservice.entity.key.ExchangePK;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

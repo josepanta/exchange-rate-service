@@ -10,7 +10,6 @@ import javax.persistence.Id;
 public class Currency {
     @Id
     private Integer id;
-
     private String name;
     private String description;
 }
