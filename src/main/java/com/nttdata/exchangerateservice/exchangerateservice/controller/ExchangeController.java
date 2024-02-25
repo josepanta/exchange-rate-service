@@ -6,10 +6,8 @@ import com.nttdata.exchangerateservice.exchangerateservice.model.ExchangeRateLis
 import com.nttdata.exchangerateservice.exchangerateservice.model.ExchangeRateRequest;
 import com.nttdata.exchangerateservice.exchangerateservice.model.ExchangeRateResponse;
 import com.nttdata.exchangerateservice.exchangerateservice.service.ExchangeService;
-import com.nttdata.exchangerateservice.exchangerateservice.utils.exceptions.Constant;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
-import io.reactivex.SingleSource;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,8 +56,8 @@ public class ExchangeController implements ExchangeRateApi {
     @Override
     public Maybe<ResponseEntity<String>> updateListOfExchangeRateByCurrencyIds(ExchangeRateListRequest exchangeRateListRequest) {
         return exchangeService.updateListExchangeRate(exchangeRateListRequest.getExchangeRateList()
-                .stream().map(this::convertExchangeRateRequestToExchange)
-                .collect(Collectors.toList()))
+                        .stream().map(this::convertExchangeRateRequestToExchange)
+                        .collect(Collectors.toList()))
                 .toSingle(() -> ResponseEntity.status(HttpStatus.OK).body("OK"))
                 .toMaybe();
     }
@@ -78,24 +76,24 @@ public class ExchangeController implements ExchangeRateApi {
     public Maybe<ResponseEntity<String>> updateExchangeRateByCurrencyIds(ExchangeRateRequest exchangeRateRequest) {
         return exchangeService.updateExchangeRate(exchangeRateRequest.getCurrencyOriginId().intValue(),
                         exchangeRateRequest.getCurrencyDestinyId().intValue(), exchangeRateRequest.getAmount())
-                .toSingle(()-> ResponseEntity.status(HttpStatus.OK).body("OK"))
+                .toSingle(() -> ResponseEntity.status(HttpStatus.OK).body("OK"))
                 .toMaybe();
 
     }
 
-    private Single<ResponseEntity<ExchangeRateResponse>> buildErrorExchangeRateResponse(Throwable error){
+    private Single<ResponseEntity<ExchangeRateResponse>> buildErrorExchangeRateResponse(Throwable error) {
         return Single.just(ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ExchangeRateResponse()));
     }
 
-    private Maybe<ResponseEntity<List<ExchangeRateRequest>>> buildErrorListExchangeRateRequest(Throwable error){
+    private Maybe<ResponseEntity<List<ExchangeRateRequest>>> buildErrorListExchangeRateRequest(Throwable error) {
         return Maybe.just(ResponseEntity.status(HttpStatus.NOT_FOUND).body(List.of(new ExchangeRateRequest())));
     }
 
-    private Maybe<ResponseEntity<ExchangeRateRequest>> buildErrorExchangeRateRequest(Throwable error){
+    private Maybe<ResponseEntity<ExchangeRateRequest>> buildErrorExchangeRateRequest(Throwable error) {
         return Maybe.just(ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ExchangeRateRequest()));
     }
 
-    private ExchangeRateResponse buildExchangeRateResponse(ExchangeRateRequest exchangeRateRequest, Exchange exchange){
+    private ExchangeRateResponse buildExchangeRateResponse(ExchangeRateRequest exchangeRateRequest, Exchange exchange) {
         ExchangeRateResponse exchangeRateResponse = new ExchangeRateResponse();
         exchangeRateResponse.setCurrencyOriginId(exchangeRateRequest.getCurrencyOriginId());
         exchangeRateResponse.setCurrencyDestinyId(exchangeRateRequest.getCurrencyDestinyId());
@@ -104,22 +102,22 @@ public class ExchangeController implements ExchangeRateApi {
         return exchangeRateResponse;
     }
 
-    private Exchange convertExchangeRateRequestToExchange(ExchangeRateRequest exchangeRateRequest){
+    private Exchange convertExchangeRateRequestToExchange(ExchangeRateRequest exchangeRateRequest) {
         return modelMapper.map(exchangeRateRequest, Exchange.class);
     }
 
-    private ExchangeRateRequest convertExchangeToExchangeRateRequest(Exchange exchange){
+    private ExchangeRateRequest convertExchangeToExchangeRateRequest(Exchange exchange) {
         return modelMapper.map(exchange, ExchangeRateRequest.class);
     }
 
-    private void configMapperExchange(){
+    private void configMapperExchange() {
         TypeMap<Exchange, ExchangeRateRequest> propertyMapper = modelMapper.createTypeMap(Exchange.class, ExchangeRateRequest.class);
         propertyMapper.addMapping(Exchange::getCurrencyOrigin, ExchangeRateRequest::setCurrencyOriginId);
         propertyMapper.addMapping(Exchange::getCurrencyDestiny, ExchangeRateRequest::setCurrencyDestinyId);
         propertyMapper.addMapping(Exchange::getExchangeRate, ExchangeRateRequest::setAmount);
     }
 
-    private void configMapperExchangeRateRequest(){
+    private void configMapperExchangeRateRequest() {
         TypeMap<ExchangeRateRequest, Exchange> propertyMapper = modelMapper.createTypeMap(ExchangeRateRequest.class, Exchange.class);
         propertyMapper.addMapping(ExchangeRateRequest::getCurrencyOriginId, Exchange::setCurrencyOrigin);
         propertyMapper.addMapping(ExchangeRateRequest::getCurrencyDestinyId, Exchange::setCurrencyDestiny);
